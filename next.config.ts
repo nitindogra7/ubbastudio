@@ -1,7 +1,8 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  images: { loader: "custom", loaderFile: "./src/app/image-loader.ts" },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
