@@ -10,7 +10,7 @@ const navigation = [
   ["Process", "process"],
   ["Journal", "journal"],
 ];
-export function SiteHeader() {
+export function SiteHeader({ homePath = "" }: { homePath?: string }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const header = useRef<HTMLElement>(null);
@@ -151,7 +151,7 @@ export function SiteHeader() {
       <header ref={header} className={"nav" + (open ? " menu-is-open" : "")}>
         <div className="wrap nav-inner">
           <a
-            href="#home"
+            href={`${homePath}#home`}
             className="brand"
             aria-label="ubbastudio home"
             onClick={() => navigate("home")}
@@ -168,7 +168,7 @@ export function SiteHeader() {
             {navigation.map(([label, id]) => (
               <a
                 key={id}
-                href={"#" + id}
+                href={`${homePath}#${id}`}
                 aria-current={active === id ? "location" : undefined}
                 onClick={() => navigate(id)}
               >
@@ -179,7 +179,7 @@ export function SiteHeader() {
               </a>
             ))}
             <a
-              href="#contact"
+              href={`${homePath}#contact`}
               className="mobile-contact"
               onClick={() => navigate("contact")}
             >
@@ -188,7 +188,7 @@ export function SiteHeader() {
           </nav>
           <a
             className="nav-cta"
-            href="#contact"
+            href={`${homePath}#contact`}
             onClick={() => navigate("contact")}
           >
             Start a project <Icon name="arrow-up-right" />

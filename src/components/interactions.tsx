@@ -9,7 +9,6 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  type FormEvent,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
@@ -23,7 +22,7 @@ const DialogContext = createContext<(content: DialogContent) => void>(() => {});
 const privacy: DialogContent = {
   category: "Privacy",
   title: "A small note on this website.",
-  body: "<p>This website does not use analytics or store your project details on a server. The project form generates a text file on your device.</p><p>Photographs load from Unsplash. Your browser makes requests to that provider to display the images. Fonts are served with this website. Animation and icon libraries are bundled with this website.</p>",
+  body: "<p>This website does not use analytics. When you submit the contact form, your name, email, project message, and any company and budget details are sent to our form service at server.infraly.online to handle your enquiry.</p><p>Photographs load from Unsplash. Your browser makes requests to that provider to display the images. Fonts are served with this website. Animation and icon libraries are bundled with this website.</p>",
 };
 
 export function StudioDialogs({ children }: { children: ReactNode }) {
@@ -397,41 +396,14 @@ export function Journal() {
 }
 
 export function ProjectForm() {
-  const [status, setStatus] = useState("");
-  const urls = useRef(new Set<string>());
-  useEffect(() => {
-    const pendingUrls = urls.current;
-    return () => {
-      pendingUrls.forEach((url) => URL.revokeObjectURL(url));
-      pendingUrls.clear();
-    };
-  }, []);
-
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (!form.reportValidity()) return;
-    const data = Object.fromEntries(new FormData(form));
-    const brief = `UBBASTUDIO — PROJECT BRIEF\n\nName: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company || "—"}\nBudget: ${data.budget}\n\nABOUT THE PROJECT\n${data.project}\n`;
-    const url = URL.createObjectURL(
-      new Blob([brief], { type: "text/plain;charset=utf-8" }),
-    );
-    urls.current.add(url);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "ubbastudio-project-brief.txt";
-    link.click();
-    window.setTimeout(() => {
-      URL.revokeObjectURL(url);
-      urls.current.delete(url);
-    }, 2000);
-    setStatus(
-      "Your brief has been prepared for download. No enquiry has been sent.",
-    );
-  }
-
   return (
-    <form className="form" id="project-form" onSubmit={submit}>
+    <form
+      className="form"
+      id="project-form"
+      action="https://server.infraly.online/api/forms-and-api/f/ubba-contact-form"
+      method="POST"
+    >
+      <input name="_gotcha" hidden tabIndex={-1} autoComplete="off" />
       <div className="form-row">
         <div className="field">
           <label htmlFor="name">Name</label>
@@ -493,24 +465,21 @@ export function ProjectForm() {
         <label htmlFor="project">About your project</label>
         <textarea
           id="project"
-          name="project"
+          name="message"
           placeholder="What are you building, and when do you need it?"
           required
           maxLength={5000}
         />
       </div>
       <button className="btn primary" type="submit">
-        <span id="submit-label">Download project brief</span>{" "}
+        <span id="submit-label">Send message</span>{" "}
         <span className="arrow" aria-hidden="true">
-          <Icon name="arrow-down-to-line" />
+          <Icon name="arrow-right" />
         </span>
       </button>
       <p className="form-note" id="form-note">
-        Your brief downloads as a text file. Nothing is sent or stored on a
-        server.
-      </p>
-      <p className="form-status" id="form-status" role="status">
-        {status}
+        Your details will be sent to UBBA Studio so we can respond to your
+        enquiry.
       </p>
     </form>
   );

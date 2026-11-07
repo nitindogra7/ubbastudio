@@ -1,12 +1,12 @@
 ﻿import Image from "next/image";
 import {
   Journal,
-  PrivacyButton,
   ProjectForm,
   ServiceTabs,
   StudioDialogs,
 } from "./interactions";
 import { SiteHeader } from "./site-header";
+import { SiteFooter } from "./site-footer";
 import { ProjectCarousel } from "./project-carousel";
 import { Icon } from "./ui";
 import { imageUrl } from "@/app/data";
@@ -669,7 +669,7 @@ export function Site() {
               <a
                 className="closing-arrow"
                 href="#project-form"
-                aria-label="Prepare your project brief"
+                aria-label="Send your project enquiry"
               >
                 <Icon name="arrow-up-right" />
               </a>
@@ -690,68 +690,16 @@ export function Site() {
                   <p>Ambitious people, everywhere.</p>
                 </div>
                 <div className="brief-note">
-                  <Icon name="arrow-down-to-line" />
+                  <Icon name="arrow-right" />
                   <p>
-                    Start by preparing your brief. It downloads to your device
-                    so you can review and share it. This form doesn&apos;t send
-                    an enquiry.
+                    Tell us about your project using the form. We&apos;ll receive
+                    your details and get back to you by email.
                   </p>
                 </div>
               </div>
               <ProjectForm />
             </div>
-            <footer className="footer">
-              <div className="footer-grid">
-                <div>
-                  <a
-                    href="#home"
-                    className="brand"
-                    aria-label="ubbastudio home"
-                  >
-                    <span className="brand-icon" />
-                    ubbastudio
-                  </a>
-                  <p>
-                    Independent minds.
-                    <br />
-                    Thoughtful digital experiences.
-                  </p>
-                </div>
-                <div>
-                  <h3>Explore</h3>
-                  <div className="footer-links">
-                    <a href="#work">Selected work</a>
-                    <a href="#services">Services</a>
-                    <a href="#about">The studio</a>
-                  </div>
-                </div>
-                <div>
-                  <h3>A little more</h3>
-                  <div className="footer-links">
-                    <a href="#process">Our process</a>
-                    <a href="#faq">Questions</a>
-                    <a href="#journal">Journal</a>
-                  </div>
-                </div>
-                <div className="footer-signoff">
-                  <span>
-                    From Delhi,
-                    <br />
-                    with intention.
-                  </span>
-                  <Icon name="arrow-up-right" />
-                </div>
-              </div>
-              <div className="footer-bottom">
-                <span>
-                  © <span id="year">2026</span> ubbastudio
-                </span>
-                <PrivacyButton />
-                <a href="#home">
-                  Back to top <Icon name="arrow-up" />
-                </a>
-              </div>
-            </footer>
+            <SiteFooter />
           </div>
         </section>
       </main>
